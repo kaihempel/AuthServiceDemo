@@ -15,6 +15,7 @@ Route::get('/',         'HomeController@show')->name('home');
 Route::get('/login',    'OAuthController@login')->name('login');
 Route::get('/success',  'OAuthController@success')->name('login-success');
 Route::get('/error',    'OAuthController@error')->name('login-error');
+Route::get('/revoke',   'OAuthController@revoke')->name('revoke');
 
 Route::get('/profile',  'SocialaccountController@showProfile')->name('profile')->middleware('auth');
 
