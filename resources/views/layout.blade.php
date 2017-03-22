@@ -70,7 +70,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/profile') }}">PROFIL</a>
                     @else
                         <a id="oauth-login-link" onclick="return loginWindow(this)" href="{{ url('/login') }}">Login</a>
                     @endif
