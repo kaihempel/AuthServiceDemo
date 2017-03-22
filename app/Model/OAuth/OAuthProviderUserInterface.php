@@ -2,6 +2,7 @@
 
 /**
  * Interface OAuthProviderUserInterface
+ * Provider extension for user data load.
  *
  * @package App\Model\OAuth
  * @author Kai Hempel <kai.hempel@kuweh.de>

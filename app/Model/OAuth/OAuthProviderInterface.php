@@ -2,6 +2,8 @@
 
 /**
  * Interface OAuthProviderInterface
+ * Main provider interface:
+ * Defines all the necessary methods for oauth authentication.
  *
  * @package App\Model\OAuth
  * @author Kai Hempel <kai.hempel@kuweh.de>

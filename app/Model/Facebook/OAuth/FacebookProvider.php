@@ -55,9 +55,15 @@ class FacebookProvider implements OAuthProviderInterface, OAuthProviderUserInter
     public function getLoginUrl()
     {
         $client = $this->fb->getOAuth2Client();
+        $state  = $this->generateStateToken();
+
+        $this->fb->getRedirectLoginHelper()
+                 ->getPersistentDataHandler()
+                 ->set('state', $state);
+
         return $client->getAuthorizationUrl(
             $this->callbackUrl,
-            $this->generateStateToken(),
+            $state,
             $this->permissions,
             [
                 'display' => 'popup'
@@ -73,9 +79,15 @@ class FacebookProvider implements OAuthProviderInterface, OAuthProviderUserInter
     public function getRequestPermissionUrl()
     {
         $client = $this->fb->getOAuth2Client();
+        $state  = $this->generateStateToken();
+
+        $this->fb->getRedirectLoginHelper()
+            ->getPersistentDataHandler()
+            ->set('state', $state);
+
         return $client->getAuthorizationUrl(
             $this->callbackUrl,
-            $this->generateStateToken(),
+            $state,
             $this->permissions,
             [
                 'display' => 'popup',
@@ -196,7 +208,7 @@ class FacebookProvider implements OAuthProviderInterface, OAuthProviderUserInter
     private function getMetaDataFromToken(AccessToken $accessToken)
     {
         $client = $this->fb->getOAuth2Client();
-        return $client->debugToken($accessToken);
+        return $client->debugToken($accessToken->getValue());
     }
 
     /**

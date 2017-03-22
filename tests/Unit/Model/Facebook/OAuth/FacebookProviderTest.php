@@ -6,32 +6,18 @@ use Mockery as m;
 
 class FacebookProviderTest extends TestCase
 {
-    private function getAccessTokenMock()
-    {
-        $token = m::mock('\Facebook\Authentication\AccessToken')
-                    ->shouldReceive('getValue')->andReturn('token')
-                    ->getMock();
-
-        return $token;
-    }
-
-    private function getMetaDataMock()
-    {
-        $metaData = m::mock('\Facebook\Authentication\AccessTokenMetadata')
-                       ->shouldReceive('getScopes')->andReturn(['email'])
-                       ->shouldReceive('getIsValid')->andReturn(true)
-                       ->shouldReceive('validateAppId')
-                       ->shouldReceive('validateExpiration')
-                       ->getMock();
-
-        return $metaData;
-    }
-
     private function getFacebookOAuthClient()
     {
+        $metaData = m::mock('\Facebook\Authentication\AccessTokenMetadata')
+                    ->shouldReceive('getScopes')->andReturn(['email'])
+                    ->shouldReceive('getIsValid')->andReturn(true)
+                    ->shouldReceive('validateAppId')
+                    ->shouldReceive('validateExpiration')
+                    ->getMock();
+
         $oauth = m::mock('\Facebook\Authentication\OAuth2Client')
                     ->shouldReceive('getAuthorizationUrl')->andReturn('https://test.login.de')
-                    ->shouldReceive('debugToken')->andReturn($this->getMetaDataMock())
+                    ->shouldReceive('debugToken')->andReturn($metaData)
                     ->getMock();
 
         return $oauth;
@@ -39,9 +25,19 @@ class FacebookProviderTest extends TestCase
 
     private function getFacebookRedirectHelper()
     {
+        $token = m::mock('\Facebook\Authentication\AccessToken')
+                    ->shouldReceive('getValue')->andReturn('token')
+                    ->getMock();
+
+        $dataHandler = m::mock('\App\Model\Facebook\OAuth\PersistentDataHandler')
+                    ->shouldReceive('get')->with('state')->andReturn('12341234123412341234123412341234')
+                    ->shouldReceive('set')
+                    ->getMock();
+
         $helper = m::mock('\Facebook\Helpers\FacebookRedirectLoginHelper')
-                     ->shouldReceive('getAccessToken')->andReturn($this->getAccessTokenMock())
-                     ->getMock();
+                    ->shouldReceive('getAccessToken')->andReturn($token)
+                    ->shouldReceive('getPersistentDataHandler')->andReturn($dataHandler)
+                    ->getMock();
 
         return $helper;
     }
@@ -49,8 +45,8 @@ class FacebookProviderTest extends TestCase
     private function getFacebookAppMock()
     {
         $app = m::mock('\Facebook\FacebookApp')
-                  ->shouldReceive('getId')->andReturn('123123123')
-                  ->getMock();
+                    ->shouldReceive('getId')->andReturn('123123123')
+                    ->getMock();
 
         return $app;
     }
@@ -66,8 +62,8 @@ class FacebookProviderTest extends TestCase
                     ->getMock();
 
         $response = m::mock('\Facebook\FacebookResponse')
-                       ->shouldReceive('getGraphUser')->andReturn($user)
-                       ->getMock();
+                    ->shouldReceive('getGraphUser')->andReturn($user)
+                    ->getMock();
 
         return $response;
     }
@@ -75,12 +71,12 @@ class FacebookProviderTest extends TestCase
     private function getPictureFacebookResponseMock()
     {
         $picture = m::mock('\Facebook\GraphNodes\GraphUser')
-                      ->shouldReceive('getField')->with('url')->andReturn('https://fb.com/123/test.png')
-                      ->getMock();
+                    ->shouldReceive('getField')->with('url')->andReturn('https://fb.com/123/test.png')
+                    ->getMock();
 
         $response = m::mock('\Facebook\FacebookResponse')
-                       ->shouldReceive('getGraphUser')->andReturn($picture)
-                       ->getMock();
+                    ->shouldReceive('getGraphUser')->andReturn($picture)
+                    ->getMock();
 
         return $response;
     }
