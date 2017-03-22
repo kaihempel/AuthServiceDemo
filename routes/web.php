@@ -11,5 +11,9 @@
 |
 */
 
-Route::get('/', 'HomeController@show')->name('home');
+Route::get('/',         'HomeController@show')->name('home');
+Route::get('/login',    'OAuthController@login')->name('login');
+Route::get('/success',  'OAuthController@success')->name('login-success');
+Route::get('/error',    'OAuthController@error')->name('login-error');
+
 
