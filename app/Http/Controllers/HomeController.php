@@ -1,19 +1,15 @@
-<?php
+<?php namespace App\Http\Controllers;
+
 /**
- * Created by PhpStorm.
- * User: erosol
- * Date: 18.03.17
- * Time: 00:06
+ * Class HomeController
+ *
+ * @package App\Http\Controllers
  */
-
-namespace App\Http\Controllers;
-
-
 class HomeController extends Controller
 {
 
     public function show()
     {
-        return view('welcome');
+        return view('home/welcome');
     }
 }
